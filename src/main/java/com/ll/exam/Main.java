@@ -1,10 +1,10 @@
 package com.ll.exam;
 
-import org.json.JSONException;
+import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws JSONException, IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         new App().run();
     }
 }
