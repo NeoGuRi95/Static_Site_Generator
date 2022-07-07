@@ -1,10 +1,6 @@
 package com.ll.exam;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,10 +26,53 @@ public class App {
                 case "목록":
                     readJsonFile();
                     break;
+                default:
+                    if (cmd.matches("삭제\\?id=[0-9]+$")) {
+                        deleteJsonFile(cmd);
+                    } else if (cmd.matches("수정\\?id=[0-9]+$")) {
+                        updateJsonFile(cmd);
+                    }
+                    break;
             }
         }
-
         sc.close();
+    }
+
+    public static void updateJsonFile(String cmd) throws IOException, ParseException {
+        Scanner sc = new Scanner(System.in);
+        String id = cmd.split("=")[1].toString();
+        String updateFileName = ".\\json_db\\" + id + ".json";
+        File updateFile = new File(updateFileName);
+
+        if (updateFile.exists()) {
+            System.out.println(id + "번 명언을 수정합니다.");
+            FileReader reader = new FileReader(updateFileName);
+            Object ob = new JSONParser().parse(reader);
+            JSONObject js = (JSONObject) ob;
+
+            System.out.println("기존 명언 : " + js.get("content"));
+            System.out.print("새 명언 : ");
+            String newContent = sc.nextLine();
+
+            js.put("content", newContent);
+            writeStringToFile(js.toJSONString(), updateFile);
+            System.out.println(id + "번 명언이 수정되었습니다.");
+        } else {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+        }
+    }
+
+    public static void deleteJsonFile(String cmd) {
+        String id = cmd.split("=")[1].toString();
+        String deleteFileName = ".\\json_db\\" + id + ".json";
+        File deleteFile = new File(deleteFileName);
+
+        if (deleteFile.exists()) {
+            deleteFile.delete();
+            System.out.println(id + "번 명언이 삭제되었습니다.");
+        } else {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+        }
     }
 
     public static void readJsonFile() throws IOException, ParseException {
