@@ -1,14 +1,15 @@
 package com.ll.exam;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class App {
-
-    Map<String, String> map = new HashMap<>();
-
-    public void run() {
+    public void run() throws JSONException, IOException {
         System.out.println("== 명언 SSG ==");
 
         Scanner sc = new Scanner(System.in);
@@ -23,15 +24,28 @@ public class App {
                     break outer;
                 case "등록":
                     System.out.print("명언 : ");
-                    String article = sc.nextLine().trim();
+                    String content = sc.nextLine().trim();
                     System.out.print("작가 : ");
-                    String who = sc.nextLine().trim();
-                    map.put(article, who);
-                    System.out.println(map.size() + "번 명언이 등록되었습니다.");
+                    String person = sc.nextLine().trim();
+
+                    JSONObject jo = new JSONObject();
+                    jo.put("name", content);
+                    jo.put("person", person);
+
+                    String jsonStr = jo.toString();
+                    File jsonFile = new File("./example.json");
+
+                    writeStringToFile(jsonStr, jsonFile);
                     break;
             }
         }
 
         sc.close();
+    }
+
+    public static void writeStringToFile(String str, File file) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(str);
+        writer.close();
     }
 }
