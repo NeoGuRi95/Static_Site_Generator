@@ -35,4 +35,19 @@ public class AppTest {
         assertEquals("낄낄낄", content);
         assertEquals("원숭이", name);
     }
+
+    @Test
+    public void register_Test() throws IOException, ParseException {
+        String input = """
+               hi
+               외국인
+                """.stripIndent();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        App.registerJsonFile();
+//        long id = App.getCurrentIdOfDbInfo();
+//
+//        assertEquals(5, id);
+    }
 }

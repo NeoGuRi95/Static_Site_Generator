@@ -40,7 +40,7 @@ public class App {
 
     public static void updateJsonFile(String cmd) throws IOException, ParseException {
         Scanner sc = new Scanner(System.in);
-        String id = cmd.split("=")[1].toString();
+        String id = cmd.split("=")[1];
         String updateFileName = ".\\json_db\\" + id + ".json";
         File updateFile = new File(updateFileName);
 
@@ -76,23 +76,27 @@ public class App {
     }
 
     public static void readJsonFile() throws IOException, ParseException {
-        System.out.println("번호 / 작가 / 명언");
+        System.out.println("번호 / 명언 / 작가");
         System.out.println("---------------------");
 
         File dir = new File("./json_db");
         File files[] = dir.listFiles();
 
         for (File f : files) {
-            FileReader reader = new FileReader(f.toString());
-            Object ob = new JSONParser().parse(reader);
+            if (f.toString().contains("db_info.json")) {
+                continue;
+            } else {
+                FileReader reader = new FileReader(f.toString());
+                Object ob = new JSONParser().parse(reader);
 
-            JSONObject js = (JSONObject) ob;
+                JSONObject js = (JSONObject) ob;
 
-            String id = ((Long)js.get("id")).toString();
-            String content = (String) js.get("content");
-            String name = (String) js.get("name");
+                String id = ((Long)js.get("id")).toString();
+                String content = (String) js.get("content");
+                String name = (String) js.get("name");
 
-            System.out.println(id + " / " + content + " / " + name);
+                System.out.println(id + " / " + content + " / " + name);
+            }
         }
     }
 
@@ -114,6 +118,7 @@ public class App {
         File jsonFile = new File("./json_db/" + newIdOfJsonFile + ".json");
 
         writeStringToFile(jsonStr, jsonFile);
+        updateCurrentIdOfDbInfo();
     }
 
     public static long getCurrentIdOfDbInfo() throws IOException, ParseException {
@@ -128,16 +133,18 @@ public class App {
         return id;
     }
 
-    public static long updateCurrentIdOfDbInfo() throws IOException, ParseException {
-        File file = new File("./json_db/db_info.json");
-        FileReader reader = new FileReader(file);
+    public static void updateCurrentIdOfDbInfo() throws IOException, ParseException {
+        File dbInfoFile = new File("./json_db/db_info.json");
+        FileReader reader = new FileReader(dbInfoFile);
         Object ob = new JSONParser().parse(reader);
 
         JSONObject js = (JSONObject) ob;
 
         long id = (Long)js.get("current_id");
+        long newId = id + 1;
+        js.put("current_id", newId);
 
-        return id;
+        writeStringToFile(js.toJSONString(), dbInfoFile);
     }
 
     public static void writeStringToFile(String str, File file) throws IOException {
