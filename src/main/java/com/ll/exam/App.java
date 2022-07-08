@@ -96,31 +96,36 @@ public class App {
         }
     }
 
-    public static void registerJsonFile() throws IOException {
+    public static void registerJsonFile() throws IOException, ParseException {
         Scanner sc = new Scanner(System.in);
         System.out.print("명언 : ");
         String content = sc.nextLine().trim();
         System.out.print("작가 : ");
         String name = sc.nextLine().trim();
 
-        int numOfJsonFile = countJsonFile();
+        long newIdOfJsonFile = getCurrentIdOfJsonFile() + 1;
 
         JSONObject jo = new JSONObject();
-        jo.put("id", numOfJsonFile);
+        jo.put("id", newIdOfJsonFile);
         jo.put("content", content);
         jo.put("name", name);
 
         String jsonStr = jo.toString();
-        File jsonFile = new File("./json_db/" + numOfJsonFile + ".json");
+        File jsonFile = new File("./json_db/" + newIdOfJsonFile + ".json");
 
         writeStringToFile(jsonStr, jsonFile);
     }
 
-    public static int countJsonFile() throws IOException {
-        File dir = new File("./json_db");
-        File files[] = dir.listFiles();
+    public static long getCurrentIdOfJsonFile() throws IOException, ParseException {
+        File file = new File("./json_db/db_info.json");
+        FileReader reader = new FileReader(file);
+        Object ob = new JSONParser().parse(reader);
 
-        return files.length + 1;
+        JSONObject js = (JSONObject) ob;
+
+        long id = (Long)js.get("current_id");
+
+        return id;
     }
 
     public static void writeStringToFile(String str, File file) throws IOException {
