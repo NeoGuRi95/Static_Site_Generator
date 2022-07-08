@@ -103,7 +103,7 @@ public class App {
         System.out.print("작가 : ");
         String name = sc.nextLine().trim();
 
-        long newIdOfJsonFile = getCurrentIdOfJsonFile() + 1;
+        long newIdOfJsonFile = getCurrentIdOfDbInfo() + 1;
 
         JSONObject jo = new JSONObject();
         jo.put("id", newIdOfJsonFile);
@@ -116,7 +116,19 @@ public class App {
         writeStringToFile(jsonStr, jsonFile);
     }
 
-    public static long getCurrentIdOfJsonFile() throws IOException, ParseException {
+    public static long getCurrentIdOfDbInfo() throws IOException, ParseException {
+        File file = new File("./json_db/db_info.json");
+        FileReader reader = new FileReader(file);
+        Object ob = new JSONParser().parse(reader);
+
+        JSONObject js = (JSONObject) ob;
+
+        long id = (Long)js.get("current_id");
+
+        return id;
+    }
+
+    public static long updateCurrentIdOfDbInfo() throws IOException, ParseException {
         File file = new File("./json_db/db_info.json");
         FileReader reader = new FileReader(file);
         Object ob = new JSONParser().parse(reader);
