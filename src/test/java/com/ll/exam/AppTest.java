@@ -46,8 +46,25 @@ public class AppTest {
         System.setIn(in);
 
         App.registerJsonFile();
-//        long id = App.getCurrentIdOfDbInfo();
+    }
+
+    @Test
+    public void update_Test() throws IOException, ParseException {
+        String input = """
+               수정?id=6
+               벌레를 먹지마라
+                """.stripIndent();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Scanner sc = new Scanner(System.in);
+
+//        InputStream in = new ByteArrayInputStream("수정?id=6".getBytes());
+//        System.setIn(in);
 //
-//        assertEquals(5, id);
+//        in = new ByteArrayInputStream("벌레를 먹지마라".getBytes());
+//        System.setIn(in);
+
+        App app = new App();
+        app.run();
     }
 }
