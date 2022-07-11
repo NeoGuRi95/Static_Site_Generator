@@ -7,10 +7,14 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class App {
+    private Scanner sc;
+
+    public App() {
+        sc = new Scanner(System.in);
+    }
+
     public void run() throws IOException, ParseException {
         System.out.println("== 명언 SSG ==");
-
-        Scanner sc = new Scanner(System.in);
 
         outer:
         while (true) {
@@ -18,6 +22,7 @@ public class App {
             String cmd = sc.nextLine().trim();
 
             Rq rq = new Rq(cmd);
+            int paramId;
 
             switch (rq.getPath()) {
                 case "종료":
@@ -26,28 +31,27 @@ public class App {
                     registerJsonFile();
                     break;
                 case "목록":
-                    readJsonFile();
+                    printJsonFileAll();
                     break;
                 case "삭제":
-                    // URL에 입력된 id 얻기
-                    int paramId = rq.getIntParam("id", 0);
-                    // URL에 입력된 id가 없다면 작업중지
-                    if (paramId == 0) {
-                        System.out.println("id를 입력해주세요.");
-                        continue;
-                    }
-                    deleteJsonFile(paramId);
+                    deleteJsonFile(rq);
+                    break;
                 case "수정":
-                    updateJsonFile(cmd);
+                    updateJsonFile(rq);
                     break;
             }
         }
         sc.close();
     }
-
-    public static void updateJsonFile(String cmd) throws IOException, ParseException {
-        Scanner sc = new Scanner(System.in);
-        String id = cmd.split("=")[1];
+    // 수정
+    public void updateJsonFile(Rq rq) throws IOException, ParseException {
+        // URL에 입력된 id 얻기
+        int id = rq.getIntParam("id", 0);
+        // URL에 입력된 id가 없다면 작업중지
+        if (id == 0) {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
         String updateFileName = ".\\json_db\\" + id + ".json";
         File updateFile = new File(updateFileName);
 
@@ -56,7 +60,6 @@ public class App {
             FileReader reader = new FileReader(updateFileName);
             Object ob = new JSONParser().parse(reader);
             JSONObject js = (JSONObject) ob;
-
             System.out.println("기존 명언 : " + js.get("content"));
             System.out.print("새 명언 : ");
             String newContent = sc.nextLine();
@@ -68,8 +71,15 @@ public class App {
             System.out.println(id + "번 명언은 존재하지 않습니다.");
         }
     }
-
-    public static void deleteJsonFile(int id) {
+    // 삭제
+    public void deleteJsonFile(Rq rq) {
+        // URL에 입력된 id 얻기
+        int id = rq.getIntParam("id", 0);
+        // URL에 입력된 id가 없다면 작업중지
+        if (id == 0) {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
         String deleteFileName = ".\\json_db\\" + id + ".json";
         File deleteFile = new File(deleteFileName);
 
@@ -80,8 +90,8 @@ public class App {
             System.out.println(id + "번 명언은 존재하지 않습니다.");
         }
     }
-
-    public static void readJsonFile() throws IOException, ParseException {
+    // 목록
+    public void printJsonFileAll() throws IOException, ParseException {
         System.out.println("번호 / 명언 / 작가");
         System.out.println("---------------------");
 
@@ -105,9 +115,8 @@ public class App {
             }
         }
     }
-
-    public static void registerJsonFile() throws IOException, ParseException {
-        Scanner sc = new Scanner(System.in);
+    // 등록
+    public void registerJsonFile() throws IOException, ParseException {
         System.out.print("명언 : ");
         String content = sc.nextLine().trim();
         System.out.print("작가 : ");
@@ -126,8 +135,8 @@ public class App {
         writeStringToFile(jsonStr, jsonFile);
         updateCurrentIdOfDbInfo();
     }
-
-    public static long getCurrentIdOfDbInfo() throws IOException, ParseException {
+    // 현재 id 읽기
+    public long getCurrentIdOfDbInfo() throws IOException, ParseException {
         File file = new File("./json_db/db_info.json");
         FileReader reader = new FileReader(file);
         Object ob = new JSONParser().parse(reader);
@@ -138,8 +147,8 @@ public class App {
 
         return id;
     }
-
-    public static void updateCurrentIdOfDbInfo() throws IOException, ParseException {
+    // 현재 id 증가
+    public void updateCurrentIdOfDbInfo() throws IOException, ParseException {
         File dbInfoFile = new File("./json_db/db_info.json");
         FileReader reader = new FileReader(dbInfoFile);
         Object ob = new JSONParser().parse(reader);
@@ -152,8 +161,8 @@ public class App {
 
         writeStringToFile(js.toJSONString(), dbInfoFile);
     }
-
-    public static void writeStringToFile(String str, File file) throws IOException {
+    // json 파일 생성
+    public void writeStringToFile(String str, File file) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(str);
         writer.close();
