@@ -56,13 +56,6 @@ public class AppTest {
                 """.stripIndent();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        Scanner sc = new Scanner(System.in);
-
-//        InputStream in = new ByteArrayInputStream("수정?id=6".getBytes());
-//        System.setIn(in);
-//
-//        in = new ByteArrayInputStream("벌레를 먹지마라".getBytes());
-//        System.setIn(in);
 
         App app = new App();
         app.run();

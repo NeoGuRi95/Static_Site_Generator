@@ -17,7 +17,9 @@ public class App {
             System.out.printf("명령) ");
             String cmd = sc.nextLine().trim();
 
-            switch (cmd) {
+            Rq rq = new Rq(cmd);
+
+            switch (rq.getPath()) {
                 case "종료":
                     break outer;
                 case "등록":
@@ -26,12 +28,17 @@ public class App {
                 case "목록":
                     readJsonFile();
                     break;
-                default:
-                    if (cmd.matches("삭제\\?id=[0-9]+$")) {
-                        deleteJsonFile(cmd);
-                    } else if (cmd.matches("수정\\?id=[0-9]+$")) {
-                        updateJsonFile(cmd);
+                case "삭제":
+                    // URL에 입력된 id 얻기
+                    int paramId = rq.getIntParam("id", 0);
+                    // URL에 입력된 id가 없다면 작업중지
+                    if (paramId == 0) {
+                        System.out.println("id를 입력해주세요.");
+                        continue;
                     }
+                    deleteJsonFile(paramId);
+                case "수정":
+                    updateJsonFile(cmd);
                     break;
             }
         }
@@ -62,8 +69,7 @@ public class App {
         }
     }
 
-    public static void deleteJsonFile(String cmd) {
-        String id = cmd.split("=")[1].toString();
+    public static void deleteJsonFile(int id) {
         String deleteFileName = ".\\json_db\\" + id + ".json";
         File deleteFile = new File(deleteFileName);
 
