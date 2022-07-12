@@ -11,19 +11,19 @@ public class Rq {
     public Rq(String url) {
         this.url = url;
         String[] urlBits = url.split("\\?", 2);
-        this.path = urlBits[0];
+        this.path = urlBits[0]; // 등록 / 목록 / 삭제 / 수정
 
-        queryParams = new HashMap<>();
+        queryParams = new HashMap<>(); // Parameter : Value 형태
 
-        if (urlBits.length == 2) {
-            String queryStr = urlBits[1];
+        if (urlBits.length == 2) { // ? 뒤에 Parameter가 있을 경우에만
+            String queryStr = urlBits[1]; // ? 뒤 쿼리문
 
-            String[] paramBits = queryStr.split("&");
+            String[] paramBits = queryStr.split("&"); // 쿼리문을 & 기준으로 split
 
-            for (String paramBit : paramBits) {
-                String[] paramNameAndValue = paramBit.split("=", 2);
+            for (String paramBit : paramBits) { // parameter 덩어리에 대해서 for
+                String[] paramNameAndValue = paramBit.split("=", 2); // parameter와 value를 = 기준으로 나눔
 
-                if (paramNameAndValue.length == 1) {
+                if (paramNameAndValue.length == 1) { // = 기준으로 나눴는데 1개 덩어리면 value가 없다는 뜻 -> pass
                     continue;
                 }
 
