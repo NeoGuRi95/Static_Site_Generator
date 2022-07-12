@@ -9,6 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AppTest {
     @Test
+    void 파일에_내용쓰기() {
+        Util.mkdir("test_data");
+        Util.saveToFile("test_data/1.json", "내용");
+    }
+
+    @Test
     public void Rq__getPath() {
         Rq rq = new Rq("삭제?id=1");
 

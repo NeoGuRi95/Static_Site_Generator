@@ -36,13 +36,11 @@ public class WiseSayingController {
 
     public void remove(Rq rq) {
         int paramId = rq.getIntParam("id", 0);
-
         // URL에 입력된 id가 없다면 작업중지
         if (paramId == 0) {
             System.out.println("id를 입력해주세요.");
             return;
         }
-
         // URL에 입력된 id에 해당하는 명언객체 찾기
         WiseSaying foundWiseSaying = wiseSayingRepository.findById(paramId);
         if (foundWiseSaying == null) {
@@ -52,19 +50,16 @@ public class WiseSayingController {
 
         // 입력된 id에 해당하는 명언객체를 리스트에서 삭제
         wiseSayingRepository.remove(foundWiseSaying);
-
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
     }
 
     public void modify(Rq rq) {
         int paramId = rq.getIntParam("id", 0);
-
         // URL에 입력된 id가 없다면 작업중지
         if (paramId == 0) {
             System.out.println("id를 입력해주세요.");
             return;
         }
-
         // URL에 입력된 id에 해당하는 명언객체 찾기
         WiseSaying foundWiseSaying = wiseSayingRepository.findById(paramId);
         if (foundWiseSaying == null) {
@@ -75,7 +70,6 @@ public class WiseSayingController {
         System.out.println("명언(기존) : " + foundWiseSaying.content);
         System.out.print("새 명언 : ");
         String newContent = sc.nextLine();
-
         System.out.println("작가(기존) : " + foundWiseSaying.author);
         System.out.print("새 작가 : ");
         String newAuthor = sc.nextLine();
