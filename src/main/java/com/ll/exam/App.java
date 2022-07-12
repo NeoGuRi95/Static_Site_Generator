@@ -31,7 +31,7 @@ public class App {
                     wiseSayingController.list(rq);
                     break;
                 case "수정":
-                    wiseSayingController.update(rq);
+                    wiseSayingController.modify(rq);
                     break;
                 case "종료":
                     break outer;
