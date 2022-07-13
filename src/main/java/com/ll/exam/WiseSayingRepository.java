@@ -33,13 +33,25 @@ public class WiseSayingRepository {
         return wiseSaying;
     }
 
-    public void remove(WiseSaying wiseSaying) {
+    public boolean remove(int id) {
+        WiseSaying wiseSaying = findById(id);
+
+        if (wiseSaying == null) {
+            return false;
+        }
+
         wiseSayings.remove(wiseSaying);
+        return true;
     }
 
-    public void modify(int id, String newContent, String newAuthor) {
+    public boolean modify(int id, String newContent, String newAuthor) {
         WiseSaying wiseSaying = findById(id);
+
+        if (wiseSaying == null) return false;
+
         wiseSaying.content = newContent;
         wiseSaying.author = newAuthor;
+
+        return true;
     }
 }

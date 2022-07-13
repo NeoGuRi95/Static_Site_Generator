@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class WiseSayingController {
     private Scanner sc;
-    private WiseSayingRepository wiseSayingRepository = new WiseSayingRepository();
+    private WiseSayingService wiseSayingService = new WiseSayingService();
 
     public WiseSayingController(Scanner sc) {
         this.sc = sc;
@@ -15,7 +15,7 @@ public class WiseSayingController {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("-------------------");
 
-        List<WiseSaying> wiseSayings = wiseSayingRepository.findAll();
+        List<WiseSaying> wiseSayings = wiseSayingService.findAll();
 
         for (int i = wiseSayings.size() - 1; i >= 0; i--) {
             WiseSaying wiseSaying_ = wiseSayings.get(i);
@@ -29,7 +29,7 @@ public class WiseSayingController {
         System.out.printf("작가 : ");
         String author = sc.nextLine().trim();
 
-        WiseSaying wiseSaying = wiseSayingRepository.write(content, author);
+        WiseSaying wiseSaying = wiseSayingService.write(content, author);
 
         System.out.printf("%d번 명언이 등록되었습니다.\n", wiseSaying.id);
     }
@@ -42,14 +42,14 @@ public class WiseSayingController {
             return;
         }
         // URL에 입력된 id에 해당하는 명언객체 찾기
-        WiseSaying foundWiseSaying = wiseSayingRepository.findById(paramId);
+        WiseSaying foundWiseSaying = wiseSayingService.findById(paramId);
         if (foundWiseSaying == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다.\n", paramId);
             return;
         }
 
         // 입력된 id에 해당하는 명언객체를 리스트에서 삭제
-        wiseSayingRepository.remove(foundWiseSaying);
+        wiseSayingService.remove(paramId);
         System.out.printf("%d번 명언이 삭제되었습니다.\n", paramId);
     }
 
@@ -61,7 +61,7 @@ public class WiseSayingController {
             return;
         }
         // URL에 입력된 id에 해당하는 명언객체 찾기
-        WiseSaying foundWiseSaying = wiseSayingRepository.findById(paramId);
+        WiseSaying foundWiseSaying = wiseSayingService.findById(paramId);
         if (foundWiseSaying == null) {
             System.out.printf("%d번 명언은 존재하지 않습니다.\n", paramId);
             return;
@@ -74,7 +74,7 @@ public class WiseSayingController {
         System.out.print("새 작가 : ");
         String newAuthor = sc.nextLine();
 
-        wiseSayingRepository.modify(paramId, newContent, newAuthor);
+        wiseSayingService.modify(paramId, newContent, newAuthor);
         System.out.printf("%d번 명언이 수정되었습니다.\n", paramId);
     }
 }
