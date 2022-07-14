@@ -3,6 +3,7 @@ package com.ll.exam;
 import java.util.Scanner;
 
 public class App {
+    public static String mode = "prod";
     private Scanner sc;
 
     public App(Scanner sc) {

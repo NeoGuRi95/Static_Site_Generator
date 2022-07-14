@@ -8,16 +8,13 @@ import java.nio.channels.FileChannel;
 
 public class Util {
     public static void saveToFile(String path, String body) {
-        try {
-            RandomAccessFile stream = new RandomAccessFile(path, "rw");
-            FileChannel channel = stream.getChannel();
+        try (RandomAccessFile stream = new RandomAccessFile(path, "rw");
+             FileChannel channel = stream.getChannel()) {
             byte[] strBytes = body.getBytes();
             ByteBuffer buffer = ByteBuffer.allocate(strBytes.length);
             buffer.put(strBytes);
             buffer.flip();
             channel.write(buffer);
-            stream.close();
-            channel.close();
         } catch (IOException e) {
 
         }
@@ -28,15 +25,16 @@ public class Util {
         dir.mkdirs();
     }
 
-    public static String getFromFile(String path) {
-        try {
-            RandomAccessFile reader = new RandomAccessFile(path, "r");
-            String body = reader.readLine();
-            reader.close();
+    public static String readFromFile(String path) {
+        try (RandomAccessFile reader = new RandomAccessFile(path, "r")) {
+            String line = null;
+            String body = "";
 
-            return body;
-        }
-        catch ( IOException e ) {
+            while ( (line = reader.readLine()) != null ){
+                body += new String(line.getBytes("iso-8859-1"), "utf-8") + "\n";
+            }
+            return body.trim();
+        } catch (IOException e) {
         }
 
         return "";
