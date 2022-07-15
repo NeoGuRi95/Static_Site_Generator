@@ -12,12 +12,14 @@ public class App {
     public void run() {
         System.out.println("==명언 SSG 시작==");
         WiseSayingController wiseSayingController = new WiseSayingController(sc);
-        String cmd = sc.nextLine();
-        Rq rq = new Rq(cmd);
 
         outer:
         while (true) {
+
             System.out.print("명령) ");
+            String cmd = sc.nextLine();
+            Rq rq = new Rq(cmd);
+
             switch (rq.getPath()) {
                 case "등록":
                     wiseSayingController.write();
