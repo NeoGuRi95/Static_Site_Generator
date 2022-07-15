@@ -14,6 +14,11 @@ public class FileDBTest {
 //        Util.deleteDir("test_data");
 //        Util.mkdir("test_data");
 //    }
+    @Test
+    void testGetDBInfo() {
+        int id = Util.readNumberFromFile("./jsonDB/DB_Info.txt", 9999);
+        assertEquals(1, id);
+    }
 //
 //    @Test
 //    void 특정_폴더에_들어있는_JSON_파일들만_모아서_객체화_시킨_후_리스트에_담기() {
@@ -43,18 +48,6 @@ public class FileDBTest {
 //    }
 //
 //
-//    @Test
-//    void 특정_폴더에_존재하는_모든_파일의_이름들을_가져온다() {
-//        Util.saveNumberToFile("test_data/1.txt", 1);
-//        Util.saveNumberToFile("test_data/2.txt", 1);
-//        Util.saveNumberToFile("test_data/3.txt", 1);
-//
-//        List<String> fileNames = Util.getFileNamesFromDir("test_data");
-//
-//        assertEquals("1.txt", fileNames.get(0));
-//        assertEquals("2.txt", fileNames.get(1));
-//        assertEquals("3.txt", fileNames.get(2));
-//    }
 //
 //
 //    @Test
