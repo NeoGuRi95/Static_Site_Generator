@@ -2,10 +2,6 @@ package com.ll.exam;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.util.Map;
-import java.util.Scanner;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AppTest {
@@ -39,6 +35,12 @@ public class AppTest {
     @Test
     public void 문자열을_스캐너의_입력으로_설정() {
         String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라
+                이순신
+                등록
+                나에게 불가능이란 없다.
+                나폴레옹
                 목록
                 종료
                 """);
