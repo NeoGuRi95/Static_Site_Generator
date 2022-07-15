@@ -9,7 +9,7 @@ public class App {
         this.sc = sc;
     }
 
-    public void run(Scanner sc) {
+    public void run() {
         System.out.println("==명언 SSG 시작==");
         WiseSayingController wiseSayingController = new WiseSayingController(sc);
         String cmd = sc.nextLine();
