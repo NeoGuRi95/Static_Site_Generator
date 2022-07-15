@@ -19,6 +19,16 @@ public class FileDBTest {
         int id = Util.readNumberFromFile("./jsonDB/DB_Info.txt", 9999);
         assertEquals(1, id);
     }
+
+    @Test
+    void testSaveWiseSaying() {
+        WiseSaying wiseSaying = new WiseSaying(1, "내 사전에 불가능이란 없다.", "나폴레옹");
+        Util.saveToFile("jsonDB/test.json", wiseSaying.toJson());
+
+        String line = Util.readFromFile("jsonDB/test.json").trim();
+
+        assertEquals(wiseSaying.toJson(), line);
+    }
 //
 //    @Test
 //    void 특정_폴더에_들어있는_JSON_파일들만_모아서_객체화_시킨_후_리스트에_담기() {
@@ -46,9 +56,6 @@ public class FileDBTest {
 //        assertEquals(wiseSaying1, wiseSayings.get(0));
 //        assertEquals(wiseSaying2, wiseSayings.get(1));
 //    }
-//
-//
-//
 //
 //    @Test
 //    void 파일에_숫자_저장() {
@@ -86,15 +93,6 @@ public class FileDBTest {
 //        assertEquals("나폴레옹", map.get("author"));
 //    }
 //
-//    @Test
-//    void 파일에_객체를_저장한다() {
-//        WiseSaying wiseSaying = new WiseSaying(1, "내 사전에 불가능이란 없다.", "나폴레옹");
-//        Util.saveToFile("test_data/1.json", wiseSaying.toJson());
-//
-//        String line = Util.readFromFile("test_data/1.json");
-//
-//        assertEquals(wiseSaying.toJson(), line);
-//    }
 //
 //    @Test
 //    void 파일에_내용쓰고_읽기() {

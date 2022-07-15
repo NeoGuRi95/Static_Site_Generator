@@ -19,5 +19,9 @@ public class WiseSayingController {
         int id = wiseSayingService.getNewId();
 
         WiseSaying wiseSaying = new WiseSaying(id, content, author);
+        boolean rs = wiseSayingService.write(wiseSaying);
+
+        if (rs) System.out.println("save complete");
+        else System.out.println("save fail");
     }
 }

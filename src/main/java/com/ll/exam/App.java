@@ -20,6 +20,7 @@ public class App {
             System.out.print("명령) ");
             switch (rq.getPath()) {
                 case "등록":
+                    wiseSayingController.write();
                     break;
                 case "목록":
                     break;

@@ -10,4 +10,9 @@ public class WiseSayingService {
     public int getNewId() {
         return wiseSayingRepository.getNewId();
     }
+
+    public boolean write(WiseSaying wiseSaying) {
+        boolean rs = wiseSayingRepository.write(wiseSaying);
+        return rs;
+    }
 }
