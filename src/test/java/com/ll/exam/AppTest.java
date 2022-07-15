@@ -6,8 +6,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AppTest {
     @Test
@@ -16,6 +15,9 @@ public class AppTest {
                 등록
                 나의 죽음을 적들에게 알리지 말라
                 이순신
+                등록
+                나에게 불가능이란 없다.
+                나폴레옹
                 종료
                 """);
 
@@ -33,46 +35,53 @@ public class AppTest {
         assertTrue(rs.contains("명령)"));
     }
 
-    @Test
-    public void 테스트_실험() {
-        int rs = 10 + 20;
-        assertEquals(30, rs);
-    }
 
     @Test
     public void 문자열을_스캐너의_입력으로_설정() {
-        String input = """
-                등록
-                명언1
-                작가1
-                """.stripIndent();
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        Scanner sc = new Scanner(in);
+        String rs = AppTestRunner.run("""
+                목록
+                종료
+                """);
 
-        String cmd = sc.nextLine().trim();
-        String content = sc.nextLine().trim();
-        String author = sc.nextLine().trim();
-
-        assertEquals("등록", cmd);
-        assertEquals("명언1", content);
-        assertEquals("작가1", author);
+        assertTrue(rs.contains("번호 / 작가 / 명언"));
+        assertTrue(rs.contains("----------------------"));
+        assertTrue(rs.contains("2 / 나폴레옹 / 나에게 불가능이란 없다."));
+        assertTrue(rs.contains("1 / 이순신 / 나의 죽음을 적들에게 알리지 말라"));
     }
 
     @Test
-    public void 표준출력을_리다이렉션하여_결과를_문자열로_받기() throws IOException {
-        // 표준출력을 리다이렉션
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(output));
+    public void 명언을_삭제할_수_있다() {
+        String rs = AppTestRunner.run("""
+                삭제?id=1
+                목록
+                삭제?id=1
+                종료
+                """);
 
-        System.out.println("안녕");
+        assertTrue(rs.contains("1번 명언이 삭제되었습니다."));
+        assertTrue(rs.contains("2 / 나폴레옹 / 나에게 불가능이란 없다."));
+        assertFalse(rs.contains("1 / 이순신 / 나의 죽음을 적들에게 알리지 말라"));
+        assertTrue(rs.contains("1번 명언은 존재하지 않습니다."));
+    }
 
-        // 그 동안 System.out.println 으로 모아놨던 문장들을 받아옴
-        String rs = output.toString().trim();
+    @Test
+    public void 명언을_수정할_수_있다() {
+        String rs = AppTestRunner.run("""
+                등록
+                나의 죽음을 적들에게 알리지 말라
+                이순신
+                등록
+                나에게 불가능이란 없다.
+                나폴레옹
+                목록
+                수정?id=1
+                나의 죽음을 적들에게 알리지 마라!
+                이순신장군
+                목록
+                종료
+                """);
 
-        // 표준출력을 원상복구
-        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-        output.close();
-
-        assertEquals("안녕", rs);
+        assertTrue(rs.contains("1 / 이순신 / 나의 죽음을 적들에게 알리지 말라"));
+        assertTrue(rs.contains("1 / 이순신장군 / 나의 죽음을 적들에게 알리지 마라!"));
     }
 }

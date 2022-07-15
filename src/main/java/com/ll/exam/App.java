@@ -25,10 +25,13 @@ public class App {
                     wiseSayingController.write();
                     break;
                 case "목록":
+                    wiseSayingController.read();
                     break;
                 case "삭제":
+                    wiseSayingController.remove(rq);
                     break;
                 case "수정":
+                    wiseSayingController.update(rq);
                     break;
                 case "종료":
                     break outer;
